@@ -1,0 +1,27 @@
+name: Check Prettier Formatting
+
+on:
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  check-prettier:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout codebase
+        uses: actions/checkout@v2
+
+      - name: Install dependencies
+        run: npm install --production
+
+      - name: Check Prettier formatting
+        run: |
+          npm run prettier --write --config .prettier.config.js
+          npm run prettier --write --config .prettier.config.js --check
+
+      - name: Fail if formatting is not correct
+        if: succeeds(lastJob.outputs.prettier.status) == 0
+        run: |
+          echo "Prettier formatting failed. Please fix the issues and try again."
+          exit 1
