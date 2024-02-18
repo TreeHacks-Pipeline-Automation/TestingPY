@@ -1,0 +1,17 @@
+name: Check formatting with yapf
+
+on: [push]
+
+jobs:
+  check-formatting:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check formatting
+        uses: poetry/actions-check-formatting@v1
+        with:
+          file: "main.py"
+          yapf_config: |
+            [extends]
+            yapf.style = "google"
+            yapf.check_whitespace = true
+            yapf.check_tabs = true
